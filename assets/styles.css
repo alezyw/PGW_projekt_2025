@@ -34,13 +34,6 @@
     padding: 20px;
 }
 
-.description {
-    padding: 20px;
-    background-color: var(--bs-secondary-bg-subtle);
-    border-radius: 8px;
-    height: 100%;
-}
-
 .map-container {
     height: 60vh;
     width: 100%;
@@ -56,8 +49,8 @@
 .radio-group,
 .dropdown-group {
     overflow: auto;
-    height: 30vh;
-}
+    height: 20vh;
+}   
 
 .footer {
     background-color: var(--bs-primary-bg-subtle);

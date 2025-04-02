@@ -101,10 +101,19 @@ app.layout = html.Div(className="wrapper", children=[
     
     dbc.Row([
         dbc.Col(
-            html.Div(
-                "Strona przedstawiająca mapę internetową miasta Jarocin...",
-                className="description"
-            ),
+            html.Div([
+                html.H5("Warstwy"),
+                dcc.Checklist(
+                    options=[
+                        {"label": "Granica", "value": "granice"},
+                        {"label": "Podział na siatkę kwadratów 1 km²", "value": "kwadraty"},
+                        {"label": "Drogi", "value": "drogi"},
+                        {"label": "Budynki", "value": "budynki"}],
+                    value=[],
+                    id="warstwy-checklist",
+                    className="checkbox-group"
+                )
+            ]),
             width=2,
             style={"order": 1}
         ),
@@ -173,20 +182,6 @@ app.layout = html.Div(className="wrapper", children=[
             ),
         
         dbc.Col([
-            html.Div([
-                html.H5("Warstwy"),
-                dcc.Checklist(
-                    options=[
-                        {"label": "Granica", "value": "granice"},
-                        {"label": "Podział na siatkę kwadratów 1 km²", "value": "kwadraty"},
-                        {"label": "Drogi", "value": "drogi"},
-                        {"label": "Obiekty wodne", "value": "woda"},
-                        {"label": "Cieki", "value": "cieki"}],
-                    value=[],
-                    id="warstwy-checklist",
-                    className="checkbox-group"
-                )
-            ]),
             html.Hr(),
             html.Div([
                 dbc.Button(
@@ -214,6 +209,7 @@ app.layout = html.Div(className="wrapper", children=[
                 dcc.RadioItems(
                     id='miasto-wybor',
                     options=[
+                        {'label': 'Powrót', 'value': 'Powrot'},
                         {'label': 'Glan', 'value': 'Glan'},
                         {'label': 'Pałac Radoliński', 'value': 'Rado'},
                         {'label': 'Ruiny Kościoła Św Ducha', 'value': 'Ruiny_K'},
@@ -234,7 +230,6 @@ app.layout = html.Div(className="wrapper", children=[
                         {'label': 'Ruiny Pałacu Opalińskich', 'value': 'Ruiny_Palacu'},
                         {'label': 'Staw', 'value': 'Staw'},
                         {'label': 'Ratusz', 'value': 'Ratusz'},
-                        {'label': 'Powrót', 'value': 'Powrot'},
                     ],
                     value='Powrot',
                     className="radio-group")
@@ -279,8 +274,7 @@ def toggle_layers(selected_layers, n_clicks):
     layer_mapping = {
         "granice": dl.GeoJSON(url="/assets/dane/granice.geojson"),
         "drogi": dl.GeoJSON(url="/assets/dane/roads.geojson"),
-        "woda": dl.GeoJSON(url="/assets/dane/water_a.geojson"),
-        "cieki": dl.GeoJSON(url="/assets/dane/waterways.geojson")
+        "budynki": dl.GeoJSON(url="/assets/dane/budynki.geojson")
         }
     
     layers = [layer_mapping[layer] for layer in selected_layers if layer in layer_mapping]
