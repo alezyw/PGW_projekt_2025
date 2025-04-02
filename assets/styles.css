@@ -53,6 +53,12 @@
     margin: 10px 0;
 }
 
+.radio-group,
+.dropdown-group {
+    overflow: auto;
+    height: 30vh;
+}
+
 .footer {
     background-color: var(--bs-primary-bg-subtle);
     padding: 20px;

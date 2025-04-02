@@ -36,9 +36,26 @@ def pobierz_info(feature=None):
         html.B(f"Kwadrat: {feature['properties'].get('id', '')}"), html.Br(),
         html.B(f"Liczba budynków: {feature['properties'].get('NUMPOINTS', 0)}")]
 
-miejsca = [dict(name="Aquapark", lat=51.978597, lon=17.509994),
+miejsca = [dict(name="Glan", lat=51.972963, lon=17.504089),
+          dict(name="Pałac Radoliński", lat=51.975617, lon=17.503320),
           dict(name="Staw", lat=51.974335, lon=17.503632),
-          dict(name="Centrum", lat=51.969285, lon=17.501506)]
+          dict(name="Ruiny Kościoła Św Ducha", lat=51.974473, lon=17.506106),
+          dict(name="Amfiteatr", lat=51.974650, lon=17.505374),
+          dict(name="Stadion Miejski", lat=51.979215, lon=17.509113),
+          dict(name="Wieża Ciśnień", lat=51.976196, lon=17.512431),
+          dict(name="Historyczny Samolot MIG-15", lat=51.977755, lon=17.507902),
+          dict(name="Spichlerz", lat=51.973855, lon=17.500544),
+          dict(name="Kolejowa Wieża Ciśnień", lat=51.966721, lon=17.495384),
+          dict(name="JOK (Jarociński Ośrodek Kultury", lat=51.968079, lon=17.499246),
+          dict(name="Kamienie Księcia Radolnia", lat=51.969103, lon=17.471578),
+          dict(name="Kościół Św Marcina", lat=51.973273, lon=17.501745),
+          dict(name="Kościół Rzymskokatolicki Pw. Sw. Jerzego", lat=51.971360, lon=17.501362),
+          dict(name="Kościół Pw. Chrystusa Króla", lat=51.970422, lon=17.499082),
+          dict(name="Dworzec Kolejowy Jarocin", lat=51.968938, lon=17.494745),
+          dict(name="Dwór z przeł. XVIII-XIX wieku", lat=51.963916, lon=17.453284),
+          dict(name="Muzeum Napoleońskie", lat=51.942701, lon=17.562387),
+          dict(name="Ruiny Pałacu Opalińskich", lat=52.027901, lon=17.510430),
+          dict(name="Ratusz", lat=51.972357, lon=17.501538)]
 
 dd_options = [dict(value=c["name"], label=c["name"]) for c in miejsca]
 dd_defaults = [o["value"] for o in dd_options]
@@ -187,7 +204,8 @@ app.layout = html.Div(className="wrapper", children=[
                     value=dd_defaults,
                     multi=True,
                     clearable=False,
-                    placeholder="Wybierz miejsca"
+                    placeholder="Wybierz miejsca",
+                    className="dropdown-group"
                     )
             ]),
             
@@ -196,9 +214,26 @@ app.layout = html.Div(className="wrapper", children=[
                 dcc.RadioItems(
                     id='miasto-wybor',
                     options=[
-                        {'label': 'Aquapark', 'value': 'Aquapark'},
+                        {'label': 'Glan', 'value': 'Glan'},
+                        {'label': 'Pałac Radoliński', 'value': 'Rado'},
+                        {'label': 'Ruiny Kościoła Św Ducha', 'value': 'Ruiny_K'},
+                        {'label': 'Amfiteatr', 'value': 'Amfiteatr'},
+                        {'label': 'Stadion Miejski', 'value': 'Stadion'},
+                        {'label': 'Wieża Ciśnień', 'value': 'Wieza_C'},
+                        {'label': 'Historyczny Samolot MIG-15', 'value': 'Samolot'},
+                        {'label': 'Spichlerz', 'value': 'Spichlerz'},
+                        {'label': 'Kolejowa Wieża Ciśnień', 'value': 'Wieza_C_K'},
+                        {'label': 'JOK (Jarociński Ośrodek Kultury)', 'value': 'JOK'},
+                        {'label': 'Kamienie Księcia Radolnia', 'value': 'Kamienie'},
+                        {'label': 'Kościół Św Marcina', 'value': 'K1'},
+                        {'label': 'Kościół Rzymskokatolicki Pw. Sw. Jerzego', 'value': 'K2'},
+                        {'label': 'Kościół Pw. Chrystusa Króla', 'value': 'K3'},
+                        {'label': 'Dworzec Kolejowy Jarocin', 'value': 'Dworzec'},
+                        {'label': 'Dwór z przeł. XVIII-XIX wieku', 'value': 'Dwor'},
+                        {'label': 'Muzeum Napoleońskie', 'value': 'Muzeum'},
+                        {'label': 'Ruiny Pałacu Opalińskich', 'value': 'Ruiny_Palacu'},
                         {'label': 'Staw', 'value': 'Staw'},
-                        {'label': 'Centrum', 'value': 'Centrum'},
+                        {'label': 'Ratusz', 'value': 'Ratusz'},
                         {'label': 'Powrót', 'value': 'Powrot'},
                     ],
                     value='Powrot',
@@ -286,12 +321,46 @@ app.clientside_callback(
     )
 
 def update_map_center(selected_location):
-    if selected_location == "Aquapark":
-        return {"center": [51.978597, 17.509994], "zoom": 20}
+    if selected_location == "Glan":
+        return {"center": [51.972963, 17.504089], "zoom": 20}
+    elif selected_location == "Rado":
+        return {"center": [51.975617, 17.503320], "zoom": 20}
+    elif selected_location == "Ruiny_K":
+        return {"center": [51.974473, 17.506106], "zoom": 20}
+    elif selected_location == "Amfiteatr":
+        return {"center": [51.974650, 17.505374], "zoom": 20}
+    elif selected_location == "Stadion":
+        return {"center": [51.979215, 17.509113], "zoom": 20}
+    elif selected_location == "Wieza_C":
+        return {"center": [51.976196, 17.512431], "zoom": 20}
+    elif selected_location == "Samolot":
+        return {"center": [51.977755, 17.507902], "zoom": 20}
+    elif selected_location == "Spichlerz":
+        return {"center": [51.973855, 17.500544], "zoom": 20}
+    elif selected_location == "Wieza_C_K":
+        return {"center": [51.966721, 17.495384], "zoom": 20}
+    elif selected_location == "JOK":
+        return {"center": [51.968079, 17.499246], "zoom": 20}
+    elif selected_location == "Kamienie":
+        return {"center": [51.969103, 17.471578], "zoom": 20}
+    elif selected_location == "K1":
+        return {"center": [51.973273, 17.501745], "zoom": 20}
+    elif selected_location == "K2":
+        return {"center": [51.971360, 17.501362], "zoom": 20}
+    elif selected_location == "K3":
+        return {"center": [51.970422, 17.499082], "zoom": 20}
+    elif selected_location == "Dworzec":
+        return {"center": [51.968938, 17.494745], "zoom": 20}
+    elif selected_location == "Dwor":
+        return {"center": [51.963916, 17.453284], "zoom": 20}
+    elif selected_location == "Muzeum":
+        return {"center": [51.942701, 17.562387], "zoom": 20}
+    elif selected_location == "Ruiny_Palacu":
+        return {"center": [52.027901, 17.510430], "zoom": 20}
     elif selected_location == "Staw":
         return {"center": [51.974335, 17.503632], "zoom": 20}
-    elif selected_location == "Centrum":
-        return {"center": [51.969285, 17.501506], "zoom": 16}
+    elif selected_location == "Ratusz":
+        return {"center": [51.972357, 17.501538], "zoom": 20}
     return {"center": poczatkowe_centrum, "zoom": 12}
 
 if __name__ == '__main__':
@@ -299,8 +368,7 @@ if __name__ == '__main__':
     
     
     
-    
-    
+
     
     
     
