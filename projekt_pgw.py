@@ -1,3 +1,4 @@
+import os
 import dash_bootstrap_components as dbc
 from dash import Dash, html, dcc, Output, Input
 import dash_leaflet as dl
@@ -5,10 +6,19 @@ import dash_leaflet.express as dlx
 from dash.dependencies import ClientsideFunction
 from dash_extensions.javascript import assign
 
+script_path = os.path.abspath('__file__') # POTRZEBNE DO ŁADOWANIA PSUEDO-KAFELKÓW
+
+# granice zdjęć (kafelków)
+img_bounds = [
+    [[52.0, 17.5], [51.9, 17.66]],
+    [[52.1, 17.5], [52.0, 17.66]],
+    [[52.1, 17.33], [52.0, 17.5]],
+    [[52.0, 17.33], [51.9, 17.5]]]
+
 app = Dash(
     __name__,
     external_stylesheets=[
-        dbc.themes.BOOTSTRAP,
+        dbc.themes.SANDSTONE,
         dbc.icons.FONT_AWESOME],
     assets_folder='assets',
     suppress_callback_exceptions=True)
@@ -159,8 +169,7 @@ app.layout = html.Div(className="wrapper", children=[
                                             skala_kolorow=skala_kolorow,
                                             classes=classes,
                                             style=style,
-                                            colorProp="NUMPOINTS")
-                                        ),
+                                            colorProp="NUMPOINTS")),
                                     dl.LayerGroup(id="dynamic-layers")
                                 ]),
                                 name="Warstwy dodatkowe",
@@ -173,10 +182,17 @@ app.layout = html.Div(className="wrapper", children=[
                 center=poczatkowe_centrum,
                 zoom=12,
                 className="map-container",
-                style={'height': '70vh', 'position': 'relative'}
-                
-            ),
-            
+                style={'height': '70vh', 'position': 'relative'}), 
+            # weź tutaj napraw, bo mnie się już plątą w głowie
+            dcc.Slider(1889, 2024,
+            step=None,
+            marks={
+                1889: '1889',
+                1911: '1911'
+            },
+            value=1889,
+            id='year-selector'
+        )
             width=6,
             style={"order": 2, "marginLeft": "auto"}
             ),
@@ -246,6 +262,21 @@ app.layout = html.Div(className="wrapper", children=[
         className="footer"
     )
 ])
+
+# callback jest uruchamiany po każdej zmianie paska
+@app.callback(
+    Output('mapa', 'children'),
+    Input('year-selector', 'value')
+    )
+
+def ChooseYear(value):
+    # ładuje psuedo-kafelki dla wybranego roku
+    png_scan = [os.path.join(script_path,'assets','skany',str(value),p) for p in 
+                os.listdir(os.path.join(script_path,'assets','skany',str(value)))]
+    # lista składana tworząca obiekty dla nich
+    overlay = *[dl.ImageOverlay(opacity=1, url=p, bounds=img_bounds[e])
+     for e,p in enumerate(png_scan)],
+    return overlay
 
 @app.callback(
     Output("geojson-layer", "url"),
