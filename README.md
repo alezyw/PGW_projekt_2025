@@ -1,35 +1,35 @@
 # PGW_projekt_2025 - Interaktywna mapa gminy Jarocin wraz z podkładem statystyczno-historycznym
 repozytorium zawiera dane projektu zaliczeniowego z przedmiotu "Programowanie geoserwisów webowych" z semestru letniego 2025.
 
-##Spis
-*[Autorzy](#autorzy)
-*[Informacje o mapie, cel i idea stworzenia mapy](#informacje_o_mapie)
-*[Dane (skąd pobrane dane, w jaki sposób przetworzone)](#dane)
-*[Opis możliwości mapy oraz interfejsu użytkownika (np screen z opisem)](#opis_możliwości_mapy)
-*[Struktura systemu w postaci graficznej wraz z opisem (warstwy, biblioteki, klasy wraz z powiązaniami)](#struktura_systemu)
-*[Najważniejsze, najbardziej spektakularne fragmenty kodu wraz z opisem](#kod)
+## Spis
+* [Autorzy](#autorzy)
+* [Informacje o mapie, cel i idea stworzenia mapy](#informacje_o_mapie)
+* [Dane (skąd pobrane dane, w jaki sposób przetworzone)](#dane)
+* [Opis możliwości mapy oraz interfejsu użytkownika (np screen z opisem)](#opis_możliwości_mapy)
+* [Struktura systemu w postaci graficznej wraz z opisem (warstwy, biblioteki, klasy wraz z powiązaniami)](#struktura_systemu)
+* [Najważniejsze, najbardziej spektakularne fragmenty kodu wraz z opisem](#kod)
 
-##Autorzy
+## Autorzy
 - Aleksander Żywień
 - Marcel Tomczak
 
-##Informacje o mapie
+## Informacje o mapie
 - Mapa interaktywna przedstawiająca informacje o zabytkach, pokdładzie historycznym i zagęszczeniu zabudowy w gminie Jarocin. Użytkownik może posłużyć się mapą do lokalizacji ciakawych miejsc, nauki historycznego układu gminy, badać układ zabudowy i planować wycieczki.
 
-##Dane
+## Dane
 - Dane o drogach i budynkach zostały pobrane z BDOT10k z geoportal.gov.pl
 - Granica miasta została pobrana z groportal.gov.pl
 - Siatkę 1 km² i środki budynków utworzono na bazie warstwy budynków i granicy gminy poprzez podzielenie warstwy gminy na kwadrawy o bokach 1000m, następnie wyznaczenie centroidów budynków, na następnie zliczenie tych centroidów w utworzonych kwadratach.
 - Historyczne mapy topograficzne - Messtischblatt
 
-##Opis możliwości mapy
+## Opis możliwości mapy
 Tutaj pododawać screeny z numerkami
 - 1. Przycisk odpowiadający za możliwość wyświetlania/chowania centroidów budynków
 
-#Struktura systemu
+# Struktura systemu
+Dodać grafikę
 
-
-#Kod
+# Kod
 ```python
 style_handle = assign("""function(feature, context){
     const {classes, skala_kolorow, style, colorProp} = context.hideout;
