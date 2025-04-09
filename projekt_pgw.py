@@ -6,15 +6,29 @@ import dash_leaflet.express as dlx
 from dash.dependencies import ClientsideFunction
 from dash_extensions.javascript import assign
 
-script_path = os.path.abspath('__file__') # POTRZEBNE DO ŁADOWANIA PSUEDO-KAFELKÓW
+'''
+to-do list: 
+ - naprawić suwak i umiejscowienia
+ - rozkmina czy zostawić podkład OSM wbudowany czy w suwaku
+ '''
+
+
+#--------!1!! WAŻNE !!!!---------------
+# POTRZEBNE DO ŁADOWANIA PSUEDO-KAFELKÓW
+# script_path = os.path.abspath('__file__') #jeżeli bezpośrednio w intepreterze
+script_path = os.getcwd() # dla IDE
+# -----------------------------------
 
 # granice zdjęć (kafelków)
 img_bounds = [
-    [[52.0, 17.5], [51.9, 17.66]],
-    [[52.1, 17.5], [52.0, 17.66]],
-    [[52.1, 17.33], [52.0, 17.5]],
-    [[52.0, 17.33], [51.9, 17.5]]]
-
+    [[51.9, 17.5], [51.8, 17.666]], # dobrzyca
+    [[52.0, 17.333], [51.9, 17.5]], # góra
+    [[52.0, 17.5], [51.9, 17.666]], # jarocin
+    [[51.9, 17.333], [51.8, 17.5]], # kożmin wlkp.
+    [[52.1, 17.333], [52.0, 17.5]], # nmnw
+    [[52.1, 17.5], [52.0, 17.666]] # żerków
+    ]
+ 
 app = Dash(
     __name__,
     external_stylesheets=[
@@ -25,7 +39,7 @@ app = Dash(
 
 classes = [0, 20, 40, 60, 80, 100, 200, 300, 745]
 skala_kolorow = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#830000']
-style = dict(weight=2, opacity=1, color='white', dashArray='3', fillOpacity=0.7)
+style = dict(weight=2, opacity=1, color='white', dashArray='3', fillOpacity=1)
 
 style_handle = assign("""function(feature, context){
     const {classes, skala_kolorow, style, colorProp} = context.hideout;
@@ -38,13 +52,6 @@ style_handle = assign("""function(feature, context){
     return style;
 }""")
 
-def pobierz_info(feature=None):
-    header = [html.H4("Ilość budynków na km²")]
-    if not feature:
-        return header + [html.P("Najedź na kwadrat")]
-    return header + [
-        html.B(f"Kwadrat: {feature['properties'].get('id', '')}"), html.Br(),
-        html.B(f"Liczba budynków: {feature['properties'].get('NUMPOINTS', 0)}")]
 
 miejsca = [dict(name="Glan", lat=51.972963, lon=17.504089),
           dict(name="Pałac Radoliński", lat=51.975617, lon=17.503320),
@@ -83,21 +90,6 @@ color_mode_switch = html.Div(
     className="theme-switcher",
     style={"position": "absolute", "right": "20px", "top": "20px", "zIndex": 1001})
 
-info = html.Div(
-    children=pobierz_info(),
-    id="info",
-    className="info-box",
-    style={
-        "position": "absolute",
-        "top": "10px",
-        "right": "10px",
-        "zIndex": "1000",
-        "background": "white",
-        "padding": "10px",
-        "borderRadius": "5px",
-        "boxShadow": "0 2px 5px rgba(0,0,0,0.2)"
-    })
-
 app.layout = html.Div(className="wrapper", children=[
     dbc.Row(
         dbc.Col(
@@ -105,7 +97,7 @@ app.layout = html.Div(className="wrapper", children=[
                 html.Div("Mapa Jarocin", className="header-title"),
                 color_mode_switch
             ], className="header-container"),
-            width=12
+            width=12,
         )
     ),
     
@@ -116,7 +108,6 @@ app.layout = html.Div(className="wrapper", children=[
                 dcc.Checklist(
                     options=[
                         {"label": "Granica", "value": "granice"},
-                        {"label": "Podział na siatkę kwadratów 1 km²", "value": "kwadraty"},
                         {"label": "Drogi", "value": "drogi"},
                         {"label": "Budynki", "value": "budynki"}],
                     value=[],
@@ -129,75 +120,58 @@ app.layout = html.Div(className="wrapper", children=[
         ),
         
         dbc.Col(
-        html.Div([  # Dodajemy kontener Div dla dzieci
-        dl.Map(
-            id="mapa",
-            children=[
-                dl.LayersControl(
-                    position="bottomleft",
-                    children=[
-                        dl.BaseLayer(
-                            dl.TileLayer(),
-                            name="OpenStreetMap",
-                            checked=True),
-                        dl.FullScreenControl(),
-                        dl.GestureHandling(),
-                        dl.LocateControl(locateOptions={'enableHighaccuracy': True}),
-                        dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares", activeColor="#214097", completedColor="#972158"),
-                        dl.ScaleControl(position="bottomleft"),
-                        dl.BaseLayer(
-                            dl.TileLayer(
-                                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-                                attribution="Esri"),
-                            name="Satelita",
-                            checked=False),
-                        dl.Overlay(
-                            dl.LayerGroup([
-                                dl.GeoJSON(
-                                    data=geojson,
-                                    filter=geojson_filter,
-                                    hideout=dd_defaults,
-                                    id="markery",
-                                    cluster=True),
-                                dl.GeoJSON(
-                                    id="geojson-layer",
-                                    url=None,
-                                    style=style_handle,
-                                    zoomToBounds=True,
-                                    zoomToBoundsOnClick=True,
-                                    hoverStyle=dict(weight=5, color='#666', dashArray=''),
-                                    hideout=dict(
-                                        skala_kolorow=skala_kolorow,
-                                        classes=classes,
-                                        style=style,
-                                        colorProp="NUMPOINTS")),
-                                dl.LayerGroup(id="dynamic-layers")
-                            ]),
-                            name="Warstwy dodatkowe",
-                            checked=True)
-                    ]
-                ),
-                info
-            ],
-            center=poczatkowe_centrum,
-            zoom=12,
-            className="map-container",
-            style={'height': '70vh', 'position': 'relative'}
-        ),
-        # Suwak przeniesiony jako dziecko Div wewnątrz Col
-        dcc.Slider(1889, 2024,
-            step=None,
-            marks={
-                1889: '1889',
-                1911: '1911'
-            },
-            value=1889,
-            id='year-selector'
-        )
-    ]),  # Zamknięcie Div
-    width=6,
-    style={"order": 2, "marginLeft": "auto"}
-),
+            dl.Map([
+                dl.TileLayer(),
+                dl.FullScreenControl(),
+                dl.GestureHandling(),
+                dl.LocateControl(locateOptions={'enableHighaccuracy': True}),
+                dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares", activeColor="#214097", completedColor="#972158"),
+                dl.ScaleControl(position="bottomleft"),
+                #url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                dl.LayerGroup([
+                    dl.GeoJSON(
+                        data=geojson,
+                        filter=geojson_filter,
+                        hideout=dd_defaults,
+                        id="markery",
+                        cluster=True),
+                    dl.GeoJSON(
+                        id="geojson-layer",
+                        url=None,
+                        style=style_handle,
+                        zoomToBounds=True,
+                        zoomToBoundsOnClick=True,
+                        hoverStyle=dict(weight=5, color='#666', dashArray=''),
+                        hideout=dict(
+                            skala_kolorow=skala_kolorow,
+                            classes=classes,
+                            style=style,
+                            colorProp="NUMPOINTS")),
+                    dl.LayerGroup(id="dynamic-layers"),
+                    dl.LayerGroup(id="historical-layers")
+                    ]),
+                    ],
+                    center=poczatkowe_centrum,
+                    zoom=13,
+                    id='mapa',
+                    className="map-container",
+                    style={'height': '70vh', 'position': 'relative'}
+                    ),
+            width=6,
+            style={"order": 2, "marginLeft": "auto"}
+            ),
+        
+        dbc.Col([
+            dcc.Slider(1889, 2024,
+                step=None,
+                marks={
+                    1889: '1889',
+                    1911: '1911',
+                    1940: '1940'
+                },
+                value=1889,
+                id='year-selector'
+            )],width=3),
         
         dbc.Col([
             html.Hr(),
@@ -258,7 +232,7 @@ app.layout = html.Div(className="wrapper", children=[
     html.Footer(
         dbc.Row(
             dbc.Col(
-                html.Div("Marcel Tomczak 3 GI", className="footer-content")
+                html.Div("Marcel Tomczak & Aleksander Żywień III GINF DI", className="footer-content")
                 )
         ),
         className="footer"
@@ -267,33 +241,19 @@ app.layout = html.Div(className="wrapper", children=[
 
 # callback jest uruchamiany po każdej zmianie paska
 @app.callback(
-    Output('mapa', 'children'),
+    Output('historical-layers', 'children'),
     Input('year-selector', 'value')
     )
 
 def ChooseYear(value):
     # ładuje psuedo-kafelki dla wybranego roku
-    png_scan = [os.path.join(script_path,'assets','skany',str(value),p) for p in 
-                os.listdir(os.path.join(script_path,'assets','skany',str(value)))]
+    png_scan = [os.path.join('assets','skany',str(value),p) for p in 
+                os.listdir(os.path.join('assets','skany',str(value)))]
+    png_scan.sort() # sortuje alfabetycznie w celu lepszego zarządzania
     # lista składana tworząca obiekty dla nich
     overlay = *[dl.ImageOverlay(opacity=1, url=p, bounds=img_bounds[e])
      for e,p in enumerate(png_scan)],
     return overlay
-
-@app.callback(
-    Output("geojson-layer", "url"),
-    Input("warstwy-checklist", "value")
-    )
-
-def update_kwadraty(selected_layers):
-    return "/assets/dane/poligony1000.geojson" if "kwadraty" in selected_layers else None
-
-@app.callback(
-    Output("info", "children"), 
-    Input("geojson-layer", "hoverData")
-    )
-def info_hover(feature):
-    return pobierz_info(feature)
 
 @app.callback(
     [Output("dynamic-layers", "children"),
