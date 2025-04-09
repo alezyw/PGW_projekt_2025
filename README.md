@@ -3,10 +3,10 @@ repozytorium zawiera dane projektu zaliczeniowego z przedmiotu "Programowanie ge
 
 ## Spis
 * [Autorzy](#autorzy)
-* [Informacje o mapie, cel i idea stworzenia mapy](#informacje_o_mapie)
+* [Informacje o mapie, cel i idea stworzenia mapy](#informacje-o-mapie)
 * [Dane (skąd pobrane dane, w jaki sposób przetworzone)](#dane)
-* [Opis możliwości mapy oraz interfejsu użytkownika (np screen z opisem)](#opis_możliwości_mapy)
-* [Struktura systemu w postaci graficznej wraz z opisem (warstwy, biblioteki, klasy wraz z powiązaniami)](#struktura_systemu)
+* [Opis możliwości mapy oraz interfejsu użytkownika (np screen z opisem)](#opis-możliwości-mapy)
+* [Struktura systemu w postaci graficznej wraz z opisem (warstwy, biblioteki, klasy wraz z powiązaniami)](#struktura-systemu)
 * [Najważniejsze, najbardziej spektakularne fragmenty kodu wraz z opisem](#kod)
 
 ## Autorzy
