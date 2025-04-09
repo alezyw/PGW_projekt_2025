@@ -24,7 +24,15 @@ repozytorium zawiera dane projektu zaliczeniowego z przedmiotu "Programowanie ge
 
 ## Opis możliwości mapy
 Tutaj pododawać screeny z numerkami
-- 1. Przycisk odpowiadający za możliwość wyświetlania/chowania centroidów budynków
+1. Interaktywna mapa
+2. Przycisk odpowiadający za możliwość wyświetlania/chowania centroidów budynków
+3. Lista z punktami oznaczającymi ciekawe miejsca, z możliwością włączenia/wyłączenia ich
+4. Lista radiowa z możliwością nacisknięci, by przybliżyło nam widok w zaznaczone miejsce
+5. Pola wyboru z możliwość wyświetlania wybranej ilości warstw na raz
+6. Suwak czasowy z możliwością zmiany mapy pokładowej Messtischblatt
+7. Interaktywny panel pokazujący numer kafelka i liczbę budynków znajdujących się na warstwie podział na siatkę kwadratów 1 km²
+8. Suwak odpowiadający za tryb nocny
+
 
 # Struktura systemu
 Dodać grafikę
@@ -43,6 +51,36 @@ style_handle = assign("""function(feature, context){
 }""")
 ```
 Zaimplementowanie funkcji JavaScript do dynamicznego stylowania warstw GeoJSON na mapie. Jej funkcją jest przypisanie kolorów do poligonów na podstawie wartości liczbowych. Najpier pobiera dane z podanych wartości, a nastepnie funkcja iteruje przez wszystkie przedziały, następnie szuka ostatniego przedziału, który jest mniejszy niż wartość, a ostatecznie przypisuje odpowiedni kolor ze skali.
+
+```python
+def pobierz_info(feature=None):
+    header = [html.H4("Ilość budynków na km²")]
+    if not feature:
+        return header + [html.P("Najedź na kwadrat")]
+    return header + [
+        html.B(f"Kwadrat: {feature['properties'].get('id', '')}"), html.Br(),
+        html.B(f"Liczba budynków: {feature['properties'].get('NUMPOINTS', 0)}")]
+```
+Ten fragment kodu dotyczy generowania treści okna informacyjnego wyświtelanego po najechaniu na kafelek. Jeśli funkcja zostanie wywołana bez parametru (feature=None) - zwraca komunikat "Najedź na kwadrat", lecz gdy użytkownik najedzie kursorem na kwadrat: feature['properties'] - dostęp do najechanego obiektu geograficznego, get('id', '') - pobieranie wartości id, a '' jeśli obiekt nie istnieje, dalej jest get('NUMPOINTS', 0) - tak samo, tylko dla liczby budynków, gdy nie ma informacji podaje 0
+
+```python
+dd_options = [dict(value=c["name"], label=c["name"]) for c in miejsca]
+dd_defaults = [o["value"] for o in dd_options]
+geojson = dlx.dicts_to_geojson([{**c, **dict(tooltip=c['name'], id=c['name'])} for c in miejsca])
+geojson_filter = assign("function(feature, context){return context.hideout.includes(feature.properties.name);}")
+```
+
+W tym fragmencie najpier kod tworzy listę opcji dla komponentu dropdown, dla każdej pozycji w liście miejsca tworzy słownik z: value - wartość wewnętrzna i label - etykieta widoczna dla użytkownika. Następnie ustawia domyślnie zaznaczone wszystkie pozycje w dropdown i konwerstuje dane do formatu geojson. Na koniec tworzy funkcję filtrującą w JavaScript, gdzie context.hideout - wartości przekazane z dropdown, includes() - sprawdza czy nazwa miejsca jest na liście zaznaczonych, przez co finalnie pokazuje tylko zaznaczone miejsca.
+
+
+
+
+
+
+
+
+
+
 
 
 
