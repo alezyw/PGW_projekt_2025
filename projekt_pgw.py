@@ -37,20 +37,7 @@ app = Dash(
     assets_folder='assets',
     suppress_callback_exceptions=True)
 
-classes = [0, 20, 40, 60, 80, 100, 200, 300, 745]
-skala_kolorow = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#830000']
 style = dict(weight=2, opacity=1, color='white', dashArray='3', fillOpacity=1)
-
-style_handle = assign("""function(feature, context){
-    const {classes, skala_kolorow, style, colorProp} = context.hideout;
-    const value = feature.properties[colorProp];
-    for (let i = 0; i < classes.length; ++i) {
-        if (value > classes[i]) {
-            style.fillColor = skala_kolorow[i];
-        }
-    }
-    return style;
-}""")
 
 
 miejsca = [dict(name="Glan", lat=51.972963, lon=17.504089),
@@ -135,14 +122,6 @@ app.layout = html.Div(className="wrapper", children=[
                             hideout=dd_defaults,
                             id="markery",
                             cluster=True),
-                        dl.GeoJSON(
-                            id="geojson-layer",
-                            style=style_handle,
-                            hideout=dict(
-                                skala_kolorow=skala_kolorow,
-                                classes=classes,
-                                style=style,
-                                colorProp="NUMPOINTS")),
                         dl.LayerGroup(id="dynamic-layers"),
                         dl.LayerGroup(id="historical-layers")
                     ]),
@@ -165,7 +144,7 @@ app.layout = html.Div(className="wrapper", children=[
                         value=1889,
                         id='year-selector'
                     ),
-                    style={"padding": "20px", "backgroundColor": "white", "borderRadius": "10px"}
+                    style={"padding": "20px"}
                 )
             ]),
             width=6,
