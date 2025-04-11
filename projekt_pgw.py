@@ -81,7 +81,7 @@ app.layout = html.Div(className="wrapper", children=[
     dbc.Row(
         dbc.Col(
             html.Div([
-                html.Div("Mapa Jarocin", className="header-title"),
+                html.Div("Interaktywna historyczna mapa gminy Jarocin", className="header-title"),
                 color_mode_switch
             ], className="header-container"),
             width=12,

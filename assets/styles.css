@@ -1,15 +1,35 @@
 @import url('https://fonts.cdnfonts.com/css/moderne-fraktur');
+
+:root {
+    --bs-primary-bg-subtle: #f5f5dc;
+    --bs-header-footer-bg: #e6e6c3;
+    --bs-primary-text: #4b4a44;
+    --bs-secondary-bg-subtle: #d4cfb2;
+    --bs-accent: #8b8970;
+}
+
+[data-bs-theme="dark"] {
+    --bs-primary-bg-subtle: #3d3525;
+    --bs-header-footer-bg: #504739;
+    --bs-primary-text: #f0e6d3;
+    --bs-secondary-bg-subtle: #61584a;
+    --bs-accent: #8b7d6b;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Moderne Fraktur', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .wrapper {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: var(--bs-primary-bg-subtle);
+    color: var(--bs-primary-text);
 }
 
 .header-container {
@@ -17,18 +37,17 @@
     text-align: center;
     position: relative;
     padding: 20px;
-    background-color: var(--bs-primary-bg-subtle);
+    background-color: var(--bs-header-footer-bg);
+    border-bottom: 2px solid var(--bs-accent);
 }
 
-.header-title {
+.footer {
+    background-color: var(--bs-header-footer-bg);
+    padding: 20px;
     text-align: center;
-    color: var(--bs-primary-text);
-}
-
-.theme-switcher {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin-top: auto;
+    font-size: 22px;
+    border-top: 2px solid var(--bs-accent);
 }
 
 .main-content {
@@ -40,6 +59,8 @@
     height: 60vh;
     width: 100%;
     border-radius: 8px;
+    border: 2px solid var(--bs-accent);
+    background-color: var(--bs-secondary-bg-subtle);
 }
 
 .checkbox-group label,
@@ -52,12 +73,9 @@
 .dropdown-group {
     overflow: auto;
     height: 20vh;
-}   
-
-.footer {
-    background-color: var(--bs-primary-bg-subtle);
-    padding: 20px;
-    text-align: center;
-    margin-top: auto;
-    font-size: 22px;
+    background-color: var(--bs-secondary-bg-subtle);
+    border: 1px solid var(--bs-accent);
+    border-radius: 4px;
+    padding: 10px;
 }
+
