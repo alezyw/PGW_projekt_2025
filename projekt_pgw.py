@@ -120,58 +120,58 @@ app.layout = html.Div(className="wrapper", children=[
         ),
         
         dbc.Col(
-            dl.Map([
-                dl.TileLayer(),
-                dl.FullScreenControl(),
-                dl.GestureHandling(),
-                dl.LocateControl(locateOptions={'enableHighaccuracy': True}),
-                dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares", activeColor="#214097", completedColor="#972158"),
-                dl.ScaleControl(position="bottomleft"),
-                #url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-                dl.LayerGroup([
-                    dl.GeoJSON(
-                        data=geojson,
-                        filter=geojson_filter,
-                        hideout=dd_defaults,
-                        id="markery",
-                        cluster=True),
-                    dl.GeoJSON(
-                        id="geojson-layer",
-                        url=None,
-                        style=style_handle,
-                        zoomToBounds=True,
-                        zoomToBoundsOnClick=True,
-                        hoverStyle=dict(weight=5, color='#666', dashArray=''),
-                        hideout=dict(
-                            skala_kolorow=skala_kolorow,
-                            classes=classes,
-                            style=style,
-                            colorProp="NUMPOINTS")),
-                    dl.LayerGroup(id="dynamic-layers"),
-                    dl.LayerGroup(id="historical-layers")
+            html.Div([
+                dl.Map([
+                    dl.TileLayer(),
+                    dl.FullScreenControl(),
+                    dl.GestureHandling(),
+                    dl.LocateControl(locateOptions={'enableHighaccuracy': True}),
+                    dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares"),
+                    dl.ScaleControl(position="bottomleft"),
+                    dl.LayerGroup([
+                        dl.GeoJSON(
+                            data=geojson,
+                            filter=geojson_filter,
+                            hideout=dd_defaults,
+                            id="markery",
+                            cluster=True),
+                        dl.GeoJSON(
+                            id="geojson-layer",
+                            style=style_handle,
+                            hideout=dict(
+                                skala_kolorow=skala_kolorow,
+                                classes=classes,
+                                style=style,
+                                colorProp="NUMPOINTS")),
+                        dl.LayerGroup(id="dynamic-layers"),
+                        dl.LayerGroup(id="historical-layers")
                     ]),
-                    ],
-                    center=poczatkowe_centrum,
-                    zoom=13,
-                    id='mapa',
-                    className="map-container",
-                    style={'height': '70vh', 'position': 'relative'}
+                ],
+                center=poczatkowe_centrum,
+                zoom=13,
+                id='mapa',
+                className="map-container",
+                style={'height': '60vh'}),
+                
+                html.Div(
+                    dcc.Slider(
+                        1889, 2024,
+                        step=None,
+                        marks={
+                            1889: '1889',
+                            1911: '1911', 
+                            1940: '1940'
+                            },
+                        value=1889,
+                        id='year-selector'
                     ),
+                    style={"padding": "20px", "backgroundColor": "white", "borderRadius": "10px"}
+                )
+            ]),
             width=6,
-            style={"order": 2, "marginLeft": "auto"}
-            ),
+            style={"order": 2}
+        ),
         
-        dbc.Col([
-            dcc.Slider(1889, 2024,
-                step=None,
-                marks={
-                    1889: '1889',
-                    1911: '1911',
-                    1940: '1940'
-                },
-                value=1889,
-                id='year-selector'
-            )],width=3),
         
         dbc.Col([
             html.Hr(),
