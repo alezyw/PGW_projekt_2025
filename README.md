@@ -82,8 +82,17 @@ def toggle_layers(selected_layers, n_clicks):
 
 Ta funkcja jest callbackiem zarządzający warstwami mapy i stanem przycisku. Parametrami wejściowymi są: selected_layers - lista zaznaczonych warstw z checklisty i n_clicks - liczba kliknięć przycisku. Najpier w layer_mapping tworzy jest słownik przypisujący klucze warstw do komponentów GeoJSON. Następnie przechodzimy do filtrowania aktywnych warstw, kod dodaje tylko te warstwy, które zostały zaznaczone przez użytkownika w selected_layers oraz istnieją w layer_mapping. Następnie określana jest domyślna zawartość i kolor przysiku. Za if ustalona jest logika przełączania warstwy, gdzie pierwsze kliknięcie dodaje warstwę z centroidami budynków i zmienia kolor na zielony, a drugie kliknięcie usuwa warstwę, przywraca pierwotny stan, z kolei kolejne kliknięcia kontynuują przełączanie.
 
-
-
+```javascript
+window.dash_clientside = Object.assign({}, window.dash_clientside, {
+    clientside: {
+        switchTheme: function(switchOn) {
+            document.documentElement.setAttribute("data-bs-theme", switchOn ? "light" : "dark");
+            return window.dash_clientside.no_update;
+        }
+    }
+});
+```
+Ten kod znajduje się w osobny pliku js i jest odpowiedzialny za przełączanie motywów kolorystycznych (ciemny/jasny), działa po stronie klienta. Najpier dash_clientside służy do rozszerzenia tego globalnego obiektu w przeglądarce, a Object.assign() służy do mergowania istniejących i nowych właściwości. Tworzona jest funkcja switchTheme dostępną z poziomu komponentów Dash, a w środku niej modyfikuje się atrybut data-bs-theme. SwitchOn - wartość z przełącznika (true/false), jeśli switchOn jest true - ustawia motyw "light", jeśli switchOn jest false: ustawia motyw "dark".
 
 
 
