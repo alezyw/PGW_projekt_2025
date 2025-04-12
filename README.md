@@ -1,5 +1,4 @@
-# PGW_projekt_2025 - Interaktywna mapa gminy Jarocin wraz z podkładem historycznym
-Repozytorium zawiera dane projektu zaliczeniowego z przedmiotu "Programowanie geoserwisów webowych" z semestru letniego 2025.
+# PGW_projekt_2025 - Interaktywna mapa historyczna gminy Jarocin
 
 ## Spis
 * [Autorzy](#autorzy)
@@ -39,7 +38,7 @@ Tutaj pododawać screeny z numerkami
 12. Kontrolka umożliwiająca rysowanie linii, poligonów i mierzenie odległości na mapie
 
 # Struktura systemu
-
+![Diagram przedstawiający architekturę i działanie systemu informatycznego w projekcie](assets/diagram_archi.png)
 
 Wykorzystane biblioteki:
 os, dash_bootstrap_components, dash, dash_leaflet, dash_leaflet.express, dash.dependencies, dash_extensions.javascript
