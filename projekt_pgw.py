@@ -15,9 +15,13 @@ to-do list:
 
 #--------!1!! WAŻNE !!!!---------------
 # POTRZEBNE DO ŁADOWANIA PSUEDO-KAFELKÓW
-# script_path = os.path.abspath('__file__') #jeżeli bezpośrednio w intepreterze
-script_path = os.getcwd() # dla IDE
+try:
+    script_path = os.path.abspath(__file__) #jeżeli bezpośrednio w intepreterze
+except NameError:
+    script_path = os.getcwd() # dla IDE
 # -----------------------------------
+
+attribution = '&copy; GUGiK'
 
 # granice zdjęć (kafelków)
 img_bounds = [
@@ -101,15 +105,16 @@ app.layout = html.Div(className="wrapper", children=[
                     id="warstwy-checklist",
                     className="checkbox-group"
                 )
-            ]),
-            width=2,
+            ],style={'marginLeft': 'auto',
+                     'marginRight': 'auto',
+                     'width': '80%'}),
+            width=1,
             style={"order": 1}
         ),
         
         dbc.Col(
             html.Div([
                 dl.Map([
-                    dl.TileLayer(),
                     dl.FullScreenControl(),
                     dl.GestureHandling(),
                     dl.LocateControl(locateOptions={'enableHighaccuracy': True}),
@@ -130,7 +135,7 @@ app.layout = html.Div(className="wrapper", children=[
                 zoom=13,
                 id='mapa',
                 className="map-container",
-                style={'height': '60vh'}),
+                style={'height': '70vh'}),
                 
                 html.Div(
                     dcc.Slider(
@@ -139,7 +144,9 @@ app.layout = html.Div(className="wrapper", children=[
                         marks={
                             1889: '1889',
                             1911: '1911', 
-                            1940: '1940'
+                            1940: '1940',
+                            1984: 'połowa lat 80.',
+                            2024: 'współczesny podkład'
                             },
                         value=1889,
                         id='year-selector'
@@ -147,7 +154,7 @@ app.layout = html.Div(className="wrapper", children=[
                     style={"padding": "20px"}
                 )
             ]),
-            width=6,
+            width=7,
             style={"order": 2}
         ),
         
@@ -225,13 +232,16 @@ app.layout = html.Div(className="wrapper", children=[
     )
 
 def ChooseYear(value):
-    # ładuje psuedo-kafelki dla wybranego roku
-    png_scan = [os.path.join('assets','skany',str(value),p) for p in 
-                os.listdir(os.path.join('assets','skany',str(value)))]
-    png_scan.sort() # sortuje alfabetycznie w celu lepszego zarządzania
-    # lista składana tworząca obiekty dla nich
-    overlay = *[dl.ImageOverlay(opacity=1, url=p, bounds=img_bounds[e])
-     for e,p in enumerate(png_scan)],
+    if value == 2024:
+        overlay = dl.TileLayer(),
+    else:
+        # ładuje psuedo-kafelki dla wybranego roku
+        png_scan = [os.path.join('assets','skany',str(value),p) for p in 
+                    os.listdir(os.path.join('assets','skany',str(value)))]
+        png_scan.sort() # sortuje alfabetycznie w celu lepszego zarządzania
+        # lista składana tworząca obiekty dla nich
+        overlay = *[dl.ImageOverlay(opacity=1, url=p, bounds=img_bounds[e])
+         for e,p in enumerate(png_scan)],
     return overlay
 
 @app.callback(

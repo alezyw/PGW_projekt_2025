@@ -33,10 +33,11 @@
 }
 
 .header-container {
-    font-size: 22px;
+    font-size: 26px;
     text-align: center;
     position: relative;
-    padding: 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     background-color: var(--bs-header-footer-bg);
     border-bottom: 2px solid var(--bs-accent);
 }
@@ -52,11 +53,10 @@
 
 .main-content {
     flex: 1;
-    padding: 20px;
+    padding-top: 20px;
 }
 
 .map-container {
-    height: 60vh;
     width: 100%;
     border-radius: 8px;
     border: 2px solid var(--bs-accent);
@@ -72,10 +72,20 @@
 .radio-group,
 .dropdown-group {
     overflow: auto;
-    height: 20vh;
+    height: 30vh;
     background-color: var(--bs-secondary-bg-subtle);
     border: 1px solid var(--bs-accent);
     border-radius: 4px;
     padding: 10px;
 }
 
+#miasto-wybor > label:nth-child(1){
+    position: sticky;
+    top: 0;
+    border: 1px solid;
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+.row{
+    margin-right: 0px
+}
