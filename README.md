@@ -13,7 +13,11 @@
 - Marcel Tomczak
 
 ## Informacje o mapie
-Jest to interaktywna mapa przedstawiająca zabytki i historyczny układ zabudowy gminy Jarocin z podkładem historyczym. Zastosowania obejmują między innymi planowanie tras turystycznych, analizę zmian przestrzennych, porównywnanie stanu zabudowy.
+Jest to interaktywna mapa przedstawiająca: 
+- topografię terenu
+- lokalizacje zabytków
+- historyczny układ zabudowy i dróg
+dla gminy Jarocin z podkładem historyczym.
 
 ## Dane
 - Dane o drogach i budynkach zostały pobrane z BDOT10k z geoportal.gov.pl
@@ -23,9 +27,12 @@ Jest to interaktywna mapa przedstawiająca zabytki i historyczny układ zabudowy
     - Messtischblatt, niemieckie opracowania kartograficzne
     - Niestandardowe opracowania topograficzne (lata 80.)
 - Jako referencja - współczesny podkład OpenStreetMap
+  
+## Zastosowania
+Zastosowania serwisu mogą obejmować między innymi planowanie tras turystycznych, analizę zmian w topografii, porównywnanie ilościowe stanu zabudowy oraz dróg między podanymi latami.
 
 ## Opis możliwości mapy
-![Podgląd mapyy z numerami, które opsiują działanie strony](assets/opis_mapy.png)
+![Podgląd mapy z numerami, które opsiują działanie strony](assets/opis_mapy.png)
 1. Interaktywna mapa
 2. Przycisk odpowiadający za możliwość wyświetlania/chowania centroidów budynków
 3. Lista z punktami oznaczającymi ciekawe miejsca, z możliwością włączenia/wyłączenia ich
@@ -52,7 +59,7 @@ geojson = dlx.dicts_to_geojson([{**c, **dict(tooltip=c['name'], id=c['name'])} f
 geojson_filter = assign("function(feature, context){return context.hideout.includes(feature.properties.name);}")
 ```
 
-W tym fragmencie najpier kod tworzy listę opcji dla komponentu dropdown, dla każdej pozycji w liście miejsca tworzy słownik z: value - wartość wewnętrzna i label - etykieta widoczna dla użytkownika. Następnie ustawia domyślnie zaznaczone wszystkie pozycje w dropdown i konwerstuje dane do formatu geojson. Na koniec tworzy funkcję filtrującą w JavaScript, gdzie context.hideout - wartości przekazane z dropdown, includes() - sprawdza czy nazwa miejsca jest na liście zaznaczonych, przez co finalnie pokazuje tylko zaznaczone miejsca.
+W tym fragmencie najpier kod tworzy listę opcji dla komponentu dropdown, dla każdej pozycji w liście miejsca tworzy słownik z wartościami value - wartość wewnętrzna oraz label - etykieta widoczna dla użytkownika. Następnie ustawia domyślnie zaznaczone wszystkie pozycje w dropdown i konwerstuje dane do formatu geojson. Na koniec tworzy funkcję filtrującą w JavaScript, gdzie context.hideout - wartości przekazane z dropdown, includes() - sprawdza czy nazwa miejsca jest na liście zaznaczonych, przez co finalnie pokazuje tylko zaznaczone miejsca.
 
 
 ```python
@@ -110,7 +117,7 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
     }
 });
 ```
-Ten kod znajduje się w osobnym pliku JavaScriptu i jest odpowiedzialny za przełączanie między motywem jasnym, a czarnym. Najpierw dash_clientside służy do rozszerzenia tego globalnego obiektu w przeglądarce, a Object.assign() służy do łączenia istniejących i nowych właściwości. Tworzona jest funkcja switchTheme dostępną z poziomu komponentów Dash, a w środku niej modyfikuje się atrybut data-bs-theme. SwitchOn - wartość z przełącznika (true/false), jeśli switchOn jest true - ustawia motyw "light", jeśli switchOn jest false: ustawia motyw "dark".
+Ten kod znajduje się w osobnym pliku JavaScript i jest odpowiedzialny za przełączanie między motywem jasnym, a czarnym. Najpierw dash_clientside służy do rozszerzenia tego globalnego obiektu w przeglądarce, a Object.assign() służy do łączenia istniejących i nowych właściwości. Tworzona jest funkcja switchTheme dostępną z poziomu komponentów Dash, a w środku niej modyfikuje się atrybut data-bs-theme. SwitchOn - wartość z przełącznika (true/false), jeśli switchOn jest true - ustawia motyw "light", jeśli switchOn jest false: ustawia motyw "dark".
 
 
 
