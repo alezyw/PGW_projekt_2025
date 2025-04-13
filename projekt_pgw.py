@@ -105,11 +105,9 @@ app.layout = html.Div(className="wrapper", children=[
                     id="warstwy-checklist",
                     className="checkbox-group"
                 )
-            ],style={'marginLeft': 'auto',
-                     'marginRight': 'auto',
-                     'width': '80%'}),
+            ]),
             width=1,
-            style={"order": 1}
+            style={"order": 1, 'marginLeft': 'auto', 'marginRight': 'auto'}
         ),
         
         dbc.Col(
@@ -212,7 +210,7 @@ app.layout = html.Div(className="wrapper", children=[
                     value='Powrot',
                     className="radio-group")
             ])
-        ], width=3, style={"order": 3, "marginLeft": "20px"})
+        ], width=3, style={"order": 3, "marginLeft": "auto", "marginRight": "40px"})
     ], className="main-content"),
     
     html.Footer(

@@ -17,8 +17,6 @@
 }
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
     font-family: 'Moderne Fraktur', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -81,11 +79,7 @@
 
 #miasto-wybor > label:nth-child(1){
     position: sticky;
-    top: 0;
     border: 1px solid;
     background-color: var(--bs-primary-bg-subtle);
 }
 
-.row{
-    margin-right: 0px
-}
