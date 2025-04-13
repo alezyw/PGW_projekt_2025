@@ -25,7 +25,7 @@ Jest to interaktywna mapa przedstawiająca zabytki i historyczny układ zabudowy
 - Jako referencja - współczesny podkład OpenStreetMap
 
 ## Opis możliwości mapy
-Tutaj pododawać screeny z numerkami
+![Podgląd mapyy z numerami, które opsiują działanie strony](assets/opis_mapy.png)
 1. Interaktywna mapa
 2. Przycisk odpowiadający za możliwość wyświetlania/chowania centroidów budynków
 3. Lista z punktami oznaczającymi ciekawe miejsca, z możliwością włączenia/wyłączenia ich
@@ -34,8 +34,8 @@ Tutaj pododawać screeny z numerkami
 6. Suwak czasowy z możliwością zmiany podkładu mapy
 7. Suwak odpowiadający za tryb nocny
 8. Kontrolki odpowiadające za przyliżenie, oddalanie i pełny ekran
-11. Kontrolka odpowiadająca za lokalizacje na mapie
-12. Kontrolka umożliwiająca rysowanie linii, poligonów i mierzenie odległości na mapie
+9. Kontrolka odpowiadająca za lokalizacje na mapie
+10. Kontrolka umożliwiająca rysowanie linii, poligonów i mierzenie odległości na mapie
 
 # Struktura systemu
 ![Diagram przedstawiający architekturę i działanie systemu informatycznego w projekcie](assets/diagram_archi.png)
