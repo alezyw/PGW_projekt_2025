@@ -1,5 +1,7 @@
 # PGW_projekt_2025 - Interaktywna mapa historyczna gminy Jarocin
 
+## UWAGA! PROJEKT NIE JEST DALEJ ROZWIJANY TJ. OD DNIA 16 KWIETNIA 2025.
+
 ## Spis
 * [Autorzy](#autorzy)
 * [Informacje o mapie, cel i idea stworzenia mapy](#informacje-o-mapie)
